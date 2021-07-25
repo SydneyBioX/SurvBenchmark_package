@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Run models in SurvBenchmark</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Run models in SurvBenchmark</h1>
+<h4 class="author">Yunwei Zhang 20210723</h4>
+<address class="author_afil">
+School of Mathematics and Statistics, The University of Sydney, AustraliaCharles Perkins Centre, The University of Sydney, Australia<br>
+
+
+<div id="introduction-installation" class="section level1">
+<h1>Introduction &amp; installation</h1>
+<p><code>SurvBenchmark</code> is an R package to run survival models under the cross validation setting to get the evaluation results for each model, user can also apply further analysis based on these results.</p>
+<p>This vignette will walk through this process starts from pre-processing the data to run those models.</p>
+<ul>
+<li>note that there are multiple packages imported in <code>SurvBenchmark</code>, and therefore, please make sure you successfully have them installed before using <code>SurvBenchmark</code>. Those packages are:<br />
+</li>
+</ul>
+<pre><code>    stats,
+    parallel,
+    foreach,
+    lubridate,
+    survival,
+    dplyr,
+    glmnet,
+    rms,
+    tidyverse,
+    caret,
+    pec,
+    coefplot,
+    survAUC,
+    gridExtra,
+    ggplot2,
+    survminer,
+    randomForestSRC,
+    ggRandomForests,
+    penalized,
+    DMwR,
+    randomForest,
+    riskRegression,
+    pROC,
+    ROCR,
+    cvTools,
+    MTLR,
+    profmem,
+    pseudo,
+    survivalROC,
+    survival,
+    survAUC,
+    CoxBoost,
+    limma,
+    partykit,
+    coin,
+    compound.Cox,
+    GenAlgo,
+    survivalsvm,
+    rmatio,
+    survivalmodels,
+    reticulate,
+    Matrix,
+    keras</code></pre>
+<div id="installation" class="section level2">
+<h2>installation</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;SurvBenchmark&quot;)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SurvBenchmark)</span></code></pre></div>
+</div>
+</div>
+<div id="an-example-clinical-dataset" class="section level1">
+<h1>An example clinical dataset</h1>
+<ul>
+<li>In this section, we use the veteran dataset from the package “survival”</li>
+</ul>
+<div id="data-pre-processing" class="section level2">
+<h2>Data pre-processing</h2>
+<p>We load the data and check the column names of the data, in <code>SurvBenchmark</code>,it is required the two outcome columns: survival time and survival status are named as <strong>time</strong> and <strong>status</strong> respectively. If your data is not named properly, in this first step, you have to change the column names.</p>
+<p>This veteran data example is ok, no need to change the name.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># veteran data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;veteran&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(veteran)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;trt&quot;      &quot;celltype&quot; &quot;time&quot;     &quot;status&quot;   &quot;karno&quot;    &quot;diagtime&quot; &quot;age&quot;     </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8] &quot;prior&quot;</span></span></code></pre></div>
+</div>
+<div id="run-models-in-survbenchmark-and-get-the-evaluated-results" class="section level2">
+<h2>Run models in SurvBenchmark and get the evaluated results</h2>
+<p>First of all, we get the survival formula <strong>fitform_ogl</strong> we would like to use in the model:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>xnam <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">colnames</span>(veteran)[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>)], <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>form<span class="ot">=</span><span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;survival::Surv(time, status)~ &quot;</span>, <span class="fu">paste</span>(xnam, <span class="at">collapse=</span> <span class="st">&quot;+&quot;</span>)))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fitform_ogl<span class="ot">=</span>form</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fitform_ogl</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; survival::Surv(time, status) ~ trt + celltype + karno + diagtime + </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     age + prior</span></span></code></pre></div>
+<p>Check the distribution of survival time</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(veteran<span class="sc">$</span>time)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     1.0    25.0    80.0   121.6   144.0   999.0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(veteran<span class="sc">$</span>time)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Get the time sequence to calculate time-dependent AUC values, here, we pick 15 time points between the 1st and the 3rd quantile of all the time period</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>timess<span class="ot">=</span><span class="fu">seq</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(veteran<span class="sc">$</span>time)[<span class="dv">2</span>]),<span class="fu">as.numeric</span>(<span class="fu">summary</span>(veteran<span class="sc">$</span>time)[<span class="dv">5</span>]),(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(veteran<span class="sc">$</span>time)[<span class="dv">5</span>])<span class="sc">-</span><span class="fu">as.numeric</span>(<span class="fu">summary</span>(veteran<span class="sc">$</span>time)[<span class="dv">2</span>]))<span class="sc">/</span><span class="dv">14</span>)</span></code></pre></div>
+<p>Run Coxph model with AIC backward elimination as the feature selection method.</p>
+<ul>
+<li>this example returns a result dataframe with 5 rows, each of them is one fold under a 5-fold cross validation setting. Those columns are the corresponding evaluation measurements.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>formula1<span class="ot">=</span>fitform_ogl</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>formula2<span class="ot">=</span>fitform_ogl</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>formula3<span class="ot">=</span>survival<span class="sc">::</span><span class="fu">Surv</span>(time,status)<span class="sc">~</span><span class="dv">1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>formula4<span class="ot">=</span>survival<span class="sc">::</span><span class="fu">Surv</span>(time,status)<span class="sc">~</span><span class="dv">1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>result1<span class="ot">=</span><span class="fu">bw_cox1_fun</span>(<span class="dv">1</span>,veteran,<span class="dv">5</span>,fitform_ogl,formula1,formula2,formula3,formula4,timess)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 4</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>result1</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.6212121 0.6321724 0.6039390 0.7117519 5.063113 5.063113  NA  NA  NA  NA</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6573770 0.7408837 0.5378307 0.5354518 4.374098 4.374098  NA  NA  NA  NA</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6947674 0.7468977 0.6219801 0.6573943 4.572269 4.572269  NA  NA  NA  NA</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7048193 0.7769788 0.5917306 0.5781738 3.915361 3.915361  NA  NA  NA  NA</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7196532 0.7264957 0.6941916 0.6399590 4.237674 4.237674  NA  NA  NA  NA</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.5816327 0.5816327 0.5263535 0.5574495 0.6976403 0.6976403 0.6976403</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8600000 0.8536111 0.8536111 0.9090177 0.7916667 0.7916667 0.7916667</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8418259 0.8353704 0.8353704 0.8353704 0.8108768 0.8202055 0.8045977</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8464052 0.8156250 0.7909091 0.8431953 0.8630952 0.8630952 0.8630952</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.9055556 0.8334644 0.9010695 0.9010695 0.8643646 0.8292824 0.8648399</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7605273 0.7605273 0.7582982 0.7165547 0.7165547 0.6811897 0.6811897</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7161836 0.7350260 0.7461357 0.7461357 0.6973366 0.7021048 0.7021048</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8045977 0.8045977 0.7332553 0.7332553 0.6867275 0.6867275 0.6233770</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8630952 0.8538616 0.8036146 0.7500030 0.7483993 0.7483993 0.7483993</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8698148 0.8833891 0.8833891 0.8236344 0.6107299 0.6107299 0.6107299</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7295606 0.6375321</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6600602 0.7764916</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6980174 0.7764732</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.6682410 0.8288256</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6107299 0.8756075</span></span></code></pre></div>
+<p>Run this exmple under the parallel setting.</p>
+<ul>
+<li>You can also run large datasets under parallel to speed up and to note down the run time and memory used</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Rprof</span>(tf <span class="ot">&lt;-</span> <span class="st">&quot;rprof.log&quot;</span>,<span class="at">memory.profiling=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cox1 <span class="ot">&lt;-</span> pbmcapply<span class="sc">::</span><span class="fu">pbmclapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, bw_cox1_fun,veteran,<span class="dv">5</span>, fitform_ogl,formula1,formula2,formula3,formula4,timess, <span class="at">mc.cores =</span> <span class="dv">15</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Rprof</span>(<span class="cn">NULL</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mm<span class="ot">&lt;-</span><span class="fu">summaryRprof</span>(tf,<span class="at">memory =</span> <span class="st">&quot;both&quot;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>mm</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $by.self</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          self.time self.pct total.time total.pct mem.total</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;mcfork&quot;      0.10    83.33       0.10     83.33       0.2</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;which&quot;       0.02    16.67       0.02     16.67       0.2</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $by.total</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                         total.time total.pct mem.total self.time self.pct</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;block_exec&quot;                  0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;call_block&quot;                  0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;eval&quot;                        0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;evaluate_call&quot;               0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;evaluate::evaluate&quot;          0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;evaluate&quot;                    0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;handle&quot;                      0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;in_dir&quot;                      0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;knitr::knit&quot;                 0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;mclapply&quot;                    0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;pbmcapply::pbmclapply&quot;       0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;process_file&quot;                0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;process_group.block&quot;         0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;process_group&quot;               0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;rmarkdown::render&quot;           0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;timing_fn&quot;                   0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;withCallingHandlers&quot;         0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;withVisible&quot;                 0.12    100.00       0.3      0.00     0.00</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;mcfork&quot;                      0.10     83.33       0.2      0.10    83.33</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;FUN&quot;                         0.10     83.33       0.2      0.00     0.00</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;lapply&quot;                      0.10     83.33       0.2      0.00     0.00</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;which&quot;                       0.02     16.67       0.2      0.02    16.67</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $sample.interval</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.02</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $sampling.time</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.12</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(mm,&quot;veteran_bw_cox1m.rds&quot;)</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(cox1,&quot;veteran_bw_cox1.rds&quot;)</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="co">#cox1&lt;-readRDS(&quot;veteran_bw_cox1.rds&quot;)</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cox1)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.6212121 0.6321724 0.6039390 0.7117519 5.063113 5.063113  NA  NA  NA  NA</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6573770 0.7408837 0.5378307 0.5354518 4.374098 4.374098  NA  NA  NA  NA</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6947674 0.7468977 0.6219801 0.6573943 4.572269 4.572269  NA  NA  NA  NA</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7048193 0.7769788 0.5917306 0.5781738 3.915361 3.915361  NA  NA  NA  NA</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7196532 0.7264957 0.6941916 0.6399590 4.237674 4.237674  NA  NA  NA  NA</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.5816327 0.5816327 0.5263535 0.5574495 0.6976403 0.6976403 0.6976403</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8600000 0.8536111 0.8536111 0.9090177 0.7916667 0.7916667 0.7916667</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8418259 0.8353704 0.8353704 0.8353704 0.8108768 0.8202055 0.8045977</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8464052 0.8156250 0.7909091 0.8431953 0.8630952 0.8630952 0.8630952</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.9055556 0.8334644 0.9010695 0.9010695 0.8643646 0.8292824 0.8648399</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7605273 0.7605273 0.7582982 0.7165547 0.7165547 0.6811897 0.6811897</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7161836 0.7350260 0.7461357 0.7461357 0.6973366 0.7021048 0.7021048</span></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8045977 0.8045977 0.7332553 0.7332553 0.6867275 0.6867275 0.6233770</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8630952 0.8538616 0.8036146 0.7500030 0.7483993 0.7483993 0.7483993</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8698148 0.8833891 0.8833891 0.8236344 0.6107299 0.6107299 0.6107299</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7295606 0.6375321</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6600602 0.7764916</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6980174 0.7764732</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.6682410 0.8288256</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6107299 0.8756075</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7730978 0.8304292 0.6951629 0.5920144 3.741678 3.741678  NA  NA  NA  NA</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7580175 0.7464326 0.7345093 0.6588219 3.672532 3.672532  NA  NA  NA  NA</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.7684049 0.7649852 0.7331220 0.6848202 3.514689 3.514689  NA  NA  NA  NA</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.6638177 0.6837607 0.6342352 0.7360763 4.386035 4.386035  NA  NA  NA  NA</span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6012270 0.6659486 0.5118601 0.6137226 5.254240 5.254240  NA  NA  NA  NA</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8375000 0.8537357 0.8721108 0.9173065 0.9228192 0.9094109 0.9094109</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8939394 0.8058894 0.8058894 0.8058894 0.8724652 0.8724652 0.8724652</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8627451 0.8625000 0.8787879 0.8787879 0.9285714 0.9285714 0.9285714</span></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7697368 0.7188410 0.6673206 0.7366120 0.7254717 0.7534965 0.7536031</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8659387 0.7478261 0.7478261 0.7034406 0.6763699 0.6763699 0.6763699</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.9369342 0.9331359 0.9331359 0.8910261 0.8494678 0.8494678 0.8323992</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8689782 0.9244501 0.9067258 0.8500953 0.7430377 0.7430377 0.7430377</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9285714 0.9285714 0.9022487 0.9022487 0.8056118 0.8056118 0.8302668</span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7536031 0.7949408 0.7949408 0.7949408 0.7949408 0.7612043 0.7612043</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7118077 0.7118077 0.6007323 0.6007323 0.6007323 0.5549513 0.5549513</span></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7874116 0.8687328</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6751956 0.8518766</span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8302668 0.8611011</span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8035250 0.7570147</span></span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6275360 0.7260003</span></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.6135693 0.6839350 0.5259824 0.6119710 5.268706 5.268706  NA  NA  NA  NA</span></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6651917 0.6934414 0.6276462 0.6862222 4.681757 4.681757  NA  NA  NA  NA</span></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6374622 0.6624379 0.6029583 0.6929382 4.357527 4.357527  NA  NA  NA  NA</span></span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7800000 0.8319088 0.7064976 0.6123961 3.757231 3.757231  NA  NA  NA  NA</span></span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7819767 0.8305584 0.7138852 0.6020528 3.673509 3.673509  NA  NA  NA  NA</span></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7884615 0.6895139 0.7239649 0.7865439 0.6924030 0.6924030 0.6924030</span></span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7554348 0.6944444 0.6214286 0.6441176 0.7115385 0.7115385 0.7115385</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.7156386 0.6830816 0.6830816 0.6830816 0.7641048 0.7641048 0.7865919</span></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.9631148 0.9466912 0.9107292 0.9107292 0.9107292 0.9324187 0.9324187</span></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.9068249 0.9068249 0.9068249 0.9328649 0.9244401 0.8895440 0.8900261</span></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7083582 0.6891558 0.6359529 0.6349976 0.6199131 0.5919584 0.5380887</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8323864 0.8156250 0.8267440 0.7150117 0.7150117 0.7150117 0.7150117</span></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.7865919 0.7960822 0.7889032 0.7446887 0.7482562 0.7482562 0.7482562</span></span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8761779 0.8761779 0.8553477 0.8553477 0.8161771 0.8352383 0.8127780</span></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8900261 0.8948944 0.8493047 0.8493047 0.7776449 0.7776449 0.7776449</span></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.5544794 0.6606968</span></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7150117 0.7274621</span></span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6654952 0.7245577</span></span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8127780 0.9149871</span></span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7776449 0.8945169</span></span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7453333 0.7619048 0.7205547 0.6592858 4.039034 4.039034  NA  NA  NA  NA</span></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6777778 0.7196598 0.5846623 0.6272633 4.570868 4.570868  NA  NA  NA  NA</span></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.7662722 0.7817682 0.7329257 0.7050192 3.426414 3.426414  NA  NA  NA  NA</span></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.6293375 0.6441124 0.5932190 0.6940463 4.509304 4.509304  NA  NA  NA  NA</span></span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7461059 0.7615454 0.7110696 0.6583074 3.413201 3.413201  NA  NA  NA  NA</span></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8666558 0.7933333 0.7933333 0.7933333 0.8109052 0.8291667 0.8291667</span></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8281250 0.8153478 0.8153478 0.8640003 0.8324689 0.8324689 0.8352117</span></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.7678655 0.7170164 0.7693597 0.8794789 0.8804149 0.8804149 0.8804149</span></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7708333 0.8120301 0.7450980 0.6843750 0.7202381 0.7218935 0.7218935</span></span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.9178571 0.8492635 0.8492635 0.8111575 0.7941116 0.7941116 0.8354968</span></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8517507 0.8629467 0.8610846 0.8610846 0.8610846 0.8431293 0.8431293</span></span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8352117 0.8352117 0.8282979 0.7786249 0.7322445 0.7322445 0.7101493</span></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9284227 0.9968531 0.9968531 0.9968531 0.9449932 0.9189786 0.9189786</span></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7110768 0.7110768 0.7110768 0.6010577 0.5152499 0.5152499 0.5057257</span></span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8228427 0.8228427 0.7479979 0.7479979 0.7168227 0.7912718 0.7912718</span></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8431293 0.8503636</span></span>
+<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6786766 0.7960830</span></span>
+<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9189786 0.8472503</span></span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.5397566 0.6961803</span></span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7912718 0.8302478</span></span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[5]]</span></span>
+<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.6281337 0.6454299 0.5944805 0.6675749 4.878410 4.878410  NA  NA  NA  NA</span></span>
+<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7021858 0.7072088 0.6914265 0.6881599 3.929586 3.929586  NA  NA  NA  NA</span></span>
+<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6885714 0.7549858 0.5753908 0.5958613 4.194620 4.194620  NA  NA  NA  NA</span></span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8142415 0.8127242 0.7990494 0.7144772 2.936767 2.936767  NA  NA  NA  NA</span></span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6913183 0.6928571 0.6565264 0.7033426 4.372109 4.372109  NA  NA  NA  NA</span></span>
+<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7456140 0.6657393 0.6657393 0.6399177 0.6977574 0.7332811 0.7332811</span></span>
+<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7188863 0.6862083 0.6862083 0.7312500 0.7598262 0.7353239 0.7353239</span></span>
+<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9464286 0.9031832 0.8804025 0.8804025 0.8804025 0.8804025 0.8804025</span></span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8666667 0.8666667 0.8007519 0.9052288 0.8994083 0.8994083 0.8779762</span></span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8659387 0.8659387 0.9081522 0.8281367 0.8294818 0.8294818 0.8346282</span></span>
+<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7332811 0.7332811 0.7066600 0.6591775 0.5777091 0.4292110 0.4292110</span></span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8094504 0.8515762 0.8515762 0.8515762 0.8881754 0.8881754 0.8881754</span></span>
+<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8252861 0.8127462 0.6951474 0.6076511 0.6076511 0.6076511 0.6076511</span></span>
+<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8779762 0.8779762 0.8903846 0.8903846 0.8903846 0.8903846 0.9129742</span></span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8327362 0.8327362 0.8391608 0.8391608 0.6637888 0.7124779 0.7124779</span></span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.5117891 0.6703842</span></span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8400425 0.7556503</span></span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6076511 0.8333883</span></span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.9129742 0.8818266</span></span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7024480 0.8038783</span></span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[6]]</span></span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     hc_acc5   bc_acc5 unoc_acc5  ghc_acc5      bs1      bs2 bs3 bs4 bs5 bs6</span></span>
+<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.7166213 0.7175892 0.7023862 0.6721399 4.420576 4.420576  NA  NA  NA  NA</span></span>
+<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.6467066 0.6610311 0.6105422 0.7135545 5.088848 5.088848  NA  NA  NA  NA</span></span>
+<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.7388060 0.7460221 0.7011140 0.6688027 4.345181 4.345181  NA  NA  NA  NA</span></span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.6656805 0.6728009 0.6583830 0.7098435 4.900373 4.900373  NA  NA  NA  NA</span></span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.7859281 0.7975057 0.7347351 0.6804939 3.303737 3.303737  NA  NA  NA  NA</span></span>
+<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc1      auc2      auc3      auc4      auc5      auc6      auc7</span></span>
+<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8000000 0.8011042 0.8011042 0.7554785 0.7811902 0.8230852 0.8230852</span></span>
+<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.9377063 0.7964944 0.7728119 0.8353659 0.7669693 0.7669693 0.7669693</span></span>
+<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9107143 0.9107143 0.9107143 0.9107143 0.9107143 0.9212121 0.8843750</span></span>
+<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.6527778 0.6640161 0.6423290 0.7174024 0.7784136 0.7784136 0.7784136</span></span>
+<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8618421 0.8069307 0.8069307 0.8069307 0.8120219 0.8120219 0.8474394</span></span>
+<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        auc8      auc9     auc10     auc11     auc12     auc13     auc14</span></span>
+<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8329622 0.8732286 0.9241050 0.8881807 0.9923237 0.9923237 0.9923237</span></span>
+<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7894409 0.7762809 0.7439974 0.6773616 0.6029431 0.6029431 0.5434073</span></span>
+<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8843750 0.8843750 0.9055474 0.9055474 0.8473426 0.8090721 0.8090721</span></span>
+<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7647540 0.7647540 0.7846926 0.7846926 0.7002181 0.7313525 0.7429164</span></span>
+<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8918998 0.9745207 0.9785004 0.9244754 0.9244754 0.9244754 0.9244754</span></span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       auc15       auc</span></span>
+<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.9923237 0.8145627</span></span>
+<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.5393263 0.7440093</span></span>
+<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8090721 0.9033977</span></span>
+<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7429164 0.6973673</span></span>
+<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.8578436 0.8780208</span></span>
+<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
+<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Time difference of 0.5505106 secs</span></span>
+<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(end_time - start_time,&quot;veteran_bw_cox1t.rds&quot;)</span></span></code></pre></div>
+</div>
+</div>
+<div id="an-example-omics-dataset" class="section level1">
+<h1>An example omics dataset</h1>
+<div id="data-pre-processing." class="section level2">
+<h2>Data pre-processing.</h2>
+<ul>
+<li>In this section, we use the GSE49997_eset dataset from the package “curatedOvarianData”</li>
+</ul>
+<p>We load the data and check the column names of the data, in <code>SurvBenchmark</code>,it is required the two outcome columns: survival time and survival status are named as <strong>time</strong> and <strong>status</strong> respectively. If your data is not named properly, in this first step, you have to change the column names.<br />
+Also, to apply Differential Expression (DE) analysis to get DE genes (similarly, for genetic algorithm feature selection), we require the binarised outcome to be named as <strong>os_class</strong>, and you might need to create that column (see this example below).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load the data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;GSE49997_eset&quot;</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>expmatrix2<span class="ot">=</span>Biobase<span class="sc">::</span><span class="fu">exprs</span>(GSE49997_eset)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(expmatrix2) <span class="co">#check the dimension of the data</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 16048   204</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>expmatrix2_1<span class="ot">=</span><span class="fu">t</span>(expmatrix2)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>cancerdt2<span class="ot">=</span><span class="fu">cbind.data.frame</span>(expmatrix2_1,GSE49997_eset<span class="sc">$</span>vital_status,GSE49997_eset<span class="sc">$</span>days_to_death)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(cancerdt2)[<span class="dv">16049</span><span class="sc">:</span><span class="dv">16050</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;status&quot;</span>,<span class="st">&quot;time&quot;</span>) <span class="co">#change the name here</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>cancerdt2<span class="sc">$</span>status<span class="ot">=</span><span class="fu">as.vector</span>(<span class="fu">ifelse</span>(cancerdt2<span class="sc">$</span>status<span class="sc">==</span><span class="st">&quot;living&quot;</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>cancerdt2_1<span class="ot">=</span>cancerdt2[<span class="fu">complete.cases</span>(cancerdt2),] <span class="co"># get rid of missing values</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(cancerdt2_1) </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]   194 16050</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#check the time and status</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cancerdt2<span class="sc">$</span>status)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0   1 </span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 137  57</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cancerdt2<span class="sc">$</span>time)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    30.0   517.0   745.5   782.9  1027.2  1491.0      10</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(cancerdt2_1<span class="sc">$</span>time)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create the binary outcome column</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cancerdt2_1<span class="sc">$</span>os_class<span class="ot">=</span><span class="fu">as.vector</span>(<span class="fu">ifelse</span>(cancerdt2_1<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                        cancerdt2_1<span class="sc">$</span>time <span class="sc">&lt;</span><span class="dv">2</span><span class="sc">*</span><span class="dv">365</span>, <span class="st">&quot;poor&quot;</span>, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">ifelse</span>(cancerdt2_1<span class="sc">$</span>status<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                                               cancerdt2_1<span class="sc">$</span>time <span class="sc">&gt;</span><span class="dv">2</span><span class="sc">*</span><span class="dv">365</span>, <span class="st">&quot;good&quot;</span>, <span class="st">&quot;not&quot;</span>)))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#get the survival formulas</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>fitform_ogl<span class="ot">=</span>survival<span class="sc">::</span><span class="fu">Surv</span>(time,status)<span class="sc">~</span>.</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>formula1<span class="ot">=</span>fitform_ogl</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>formula2<span class="ot">=</span>fitform_ogl</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>formula3<span class="ot">=</span>survival<span class="sc">::</span><span class="fu">Surv</span>(time,status)<span class="sc">~</span><span class="dv">1</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>formula4<span class="ot">=</span>survival<span class="sc">::</span><span class="fu">Surv</span>(time,status)<span class="sc">~</span><span class="dv">1</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>form1<span class="ot">=</span><span class="fu">as.formula</span>(<span class="sc">~</span>.)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>timess<span class="ot">=</span><span class="fu">seq</span>(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(cancerdt2_1<span class="sc">$</span>time)[<span class="dv">2</span>]),<span class="fu">as.numeric</span>(<span class="fu">summary</span>(cancerdt2_1<span class="sc">$</span>time)[<span class="dv">5</span>]),(<span class="fu">as.numeric</span>(<span class="fu">summary</span>(cancerdt2_1<span class="sc">$</span>time)[<span class="dv">5</span>])<span class="sc">-</span><span class="fu">as.numeric</span>(<span class="fu">summary</span>(cancerdt2_1<span class="sc">$</span>time)[<span class="dv">2</span>]))<span class="sc">/</span><span class="dv">14</span>)</span></code></pre></div>
+</div>
+<div id="run-the-mtlr-model-with-de-feature-selection-and-get-the-evaluated-results" class="section level2">
+<h2>Run the MTLR model with DE feature selection and get the evaluated results</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # parallel</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># start_time &lt;- Sys.time()</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rprof(tf &lt;- &quot;rprof.log&quot;,memory.profiling=TRUE)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># result2 &lt;- pbmcapply::pbmclapply(1, mtlr_fun2,cancerdt2_1,5, 16047,1000,timess, mc.cores = 15)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rprof(NULL)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># mm&lt;-summaryRprof(tf,memory = &quot;both&quot;)</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mm</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># end_time &lt;- Sys.time()</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># time_diff=end_time - start_time</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># colnames(result2[[1]])=c(&quot;hc&quot;,&quot;bc&quot;,&quot;unoc&quot;,&quot;ghc&quot;,&quot;br1&quot;,&quot;br2&quot;,&quot;br3&quot;,&quot;br4&quot;,&quot;br5&quot;,&quot;br6&quot;,&quot;a1&quot;,&quot;a2&quot;,&quot;a3&quot;,&quot;a4&quot;,&quot;a5&quot;,&quot;a6&quot;,&quot;a7&quot;,&quot;a8&quot;,&quot;a9&quot;,&quot;a10&quot;,&quot;a11&quot;,&quot;a12&quot;,&quot;a13&quot;,&quot;a14&quot;,&quot;a15&quot;,&quot;a&quot;)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># result2=result2[[1]]</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># save(mm,time_diff,result2,file=&quot;omics_result.rda&quot;)</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;omics_result.rda&quot;</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#memory</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>mm</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $by.self</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  self.time self.pct total.time total.pct mem.total</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;readBin&quot;             0.08    57.14       0.08     57.14       0.3</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;..getNamespace&quot;      0.02    14.29       0.02     14.29       0.1</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;as.character&quot;        0.02    14.29       0.02     14.29       1.1</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;mcfork&quot;              0.02    14.29       0.02     14.29       0.0</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $by.total</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          total.time total.pct mem.total self.time self.pct</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;pbmcapply::pbmclapply&quot;        0.12     85.71       0.4      0.00     0.00</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;readBin&quot;                      0.08     57.14       0.3      0.08    57.14</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;.updateProgress&quot;              0.08     57.14       0.3      0.00     0.00</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;..getNamespace&quot;               0.02     14.29       0.1      0.02    14.29</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;as.character&quot;                 0.02     14.29       1.1      0.02    14.29</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;mcfork&quot;                       0.02     14.29       0.0      0.02    14.29</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;...elt&quot;                       0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;.customized_mcparallel&quot;       0.02     14.29       0.0      0.00     0.00</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;.rs.valueContents&quot;            0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;.rs.valueContentsImpl&quot;        0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;.rs.valueFromStr&quot;             0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;.rs.withTimeLimit&quot;            0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;&lt;Anonymous&gt;&quot;                  0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;capture.output&quot;               0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;cat&quot;                          0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;do.call&quot;                      0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;doTryCatch&quot;                   0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;eval&quot;                         0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;format.default&quot;               0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;format.fun&quot;                   0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;format&quot;                       0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;formObj&quot;                      0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;lazyLoadDBfetch&quot;              0.02     14.29       0.1      0.00     0.00</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;match.arg&quot;                    0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;maybe_truncate&quot;               0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;nchar.w&quot;                      0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;NextMethod&quot;                   0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;paste&quot;                        0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;str.data.frame&quot;               0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;str.default&quot;                  0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;str&quot;                          0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;strSub&quot;                       0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;try&quot;                          0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;tryCatch&quot;                     0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;tryCatchList&quot;                 0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;tryCatchOne&quot;                  0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;withVisible&quot;                  0.02     14.29       1.1      0.00     0.00</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $sample.interval</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.02</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $sampling.time</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.14</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="co">#time</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>time_diff</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Time difference of 6.911218 mins</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="co">#other evaluation metrics</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>result2</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          hc        bc      unoc       ghc      br1      br2 br3 br4 br5 br6</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8820059 0.6737051 0.6876490 0.5515518 880.9572 880.9572  NA  NA  NA  NA</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.7870620 0.6481503 0.9992584 0.5315493 171.1182 171.1182  NA  NA  NA  NA</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8327138 0.6259712 0.5841523 0.5446470 777.8656 777.8656  NA  NA  NA  NA</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7070707 0.5689258 0.6994260 0.5586499 107.5195 107.5195  NA  NA  NA  NA</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6969697 0.5800839 0.6112072 0.5435012 191.6757 191.6757  NA  NA  NA  NA</span></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          a1        a2        a3        a4        a5        a6        a7</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.9693582 0.9693582 0.9371116 0.9442133 0.9442133 0.9442133 0.9397504</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.8605293 0.8851813 0.7920416 0.7870250 0.8203012 0.8440969 0.8613602</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9080677 0.8579195 0.8579195 0.8589058 0.8837193 0.9639689 0.9639689</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8217768 0.8217768 0.7686673 0.7803963 0.8070476 0.6895351 0.7196977</span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6860420 0.6860420 0.6943910 0.6952859 0.6143111 0.6143111 0.5023248</span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          a8        a9       a10       a11       a12       a13       a14</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.9397504 0.9733201 0.9733201 1.0000000 0.7518366 0.7794103 0.7828570</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.9372993 0.9372993 0.9763150 0.9763150 0.9763150 0.9763150 0.9715780</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.9759154 0.9744101 0.6773477 0.8402272 0.8257025 0.8402272 0.8402272</span></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.7196977 0.7041253 0.7827083 0.8352888 0.8352888 0.8352888 0.8288113</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.5212404 0.7638894 0.7478524 0.4782125 0.4901523 0.6232562 0.6232562</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         a15         a</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8360852 0.9203719</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.9715780 0.8571633</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8402272 0.8624104</span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.8132487 0.7379015</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.6132118 0.6243507</span></span></code></pre></div>
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1>Session Info</h1>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>(<span class="st">&quot;SurvBenchmark&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R version 4.1.0 (2021-05-18)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Running under: Debian GNU/Linux 10 (buster)</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3.10.3</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3.10.3</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; character(0)</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] SurvBenchmark_0.1.0</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] Biobase_2.48.0      splines_4.1.0       foreach_1.5.0      </span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] survAUC_1.0-5       prodlim_2019.11.13  Formula_1.2-3      </span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] latticeExtra_0.6-29 grDevices_4.1.0     yaml_2.2.1         </span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] pec_2019.11.03      robustbase_0.93-6   timereg_1.9.6      </span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] numDeriv_2016.8-1.1 pillar_1.4.6        backports_1.2.1    </span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] lattice_0.20-44     quantreg_5.61       glue_1.4.1         </span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] base_4.1.0          digest_0.6.25       RColorBrewer_1.1-2 </span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [22] checkmate_2.0.0     colorspace_1.4-1    sandwich_2.5-1     </span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] rms_6.0-1           htmltools_0.5.0     Matrix_1.3-3       </span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [28] conquer_1.0.2       pkgconfig_2.0.3     SparseM_1.78       </span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [31] purrr_0.3.4         mvtnorm_1.1-1       scales_1.1.1       </span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [34] jpeg_0.1-8.1        lava_1.6.7          MatrixModels_0.4-1 </span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] htmlTable_2.0.1     tibble_3.0.3        generics_0.0.2     </span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [40] datasets_4.1.0      ggplot2_3.3.2       ellipsis_0.3.1     </span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [43] TH.data_1.0-10      BiocGenerics_0.34.0 nnet_7.3-16        </span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [46] survival_3.2-11     magrittr_1.5        crayon_1.3.4       </span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] polspline_1.1.19    evaluate_0.14       methods_4.1.0      </span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [52] nlme_3.1-152        MASS_7.3-54         foreign_0.8-81     </span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [55] utils_4.1.0         tools_4.1.0         data.table_1.13.0  </span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [58] lifecycle_0.2.0     matrixStats_0.56.0  multcomp_1.4-13    </span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] stringr_1.4.0       munsell_0.5.0       cluster_2.1.2      </span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [64] stats_4.1.0         compiler_4.1.0      pbmcapply_1.5.0    </span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [67] rlang_0.4.10        grid_4.1.0          iterators_1.0.12   </span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [70] rstudioapi_0.11     cvTools_0.3.2       graphics_4.1.0     </span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [73] htmlwidgets_1.5.1   base64enc_0.1-3     rmarkdown_2.9      </span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [76] gtable_0.3.0        codetools_0.2-18    R6_2.4.1           </span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [79] gridExtra_2.3       zoo_1.8-8           knitr_1.29         </span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [82] dplyr_1.0.1         Hmisc_4.4-1         stringi_1.5.3      </span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [85] parallel_4.1.0      Rcpp_1.0.5          vctrs_0.3.2        </span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [88] rpart_4.1-15        png_0.1-7           DEoptimR_1.0-8     </span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [91] tidyselect_1.1.0    xfun_0.24</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

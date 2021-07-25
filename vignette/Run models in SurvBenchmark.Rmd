@@ -1,0 +1,227 @@
+---
+title: "Run models in SurvBenchmark"
+author:
+- name: Yunwei Zhang 20210723
+  affiliation: 
+  - School of Mathematics and Statistics, The University of Sydney, Australia
+  - Charles Perkins Centre, The University of Sydney, Australia
+output: rmarkdown::html_vignette
+code_folding: "hide"
+vignette: >
+  %\VignetteIndexEntry{KidneyAllocation}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+  
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    warning = FALSE,
+    message = FALSE,
+    comment = "#>"
+)
+```
+
+# Introduction & installation
+
+  
+`SurvBenchmark` is an R package to run survival models under the cross validation setting to get the evaluation results for each model, user can also apply further analysis based on these results. 
+  
+  
+This vignette will walk through this process starts from pre-processing the data to run those models.  
+
+* note that there are multiple packages imported in `SurvBenchmark`, and therefore, please make sure you successfully have them installed before using `SurvBenchmark`. Those packages are:  
+```
+    stats,
+    parallel,
+    foreach,
+    lubridate,
+    survival,
+    dplyr,
+    glmnet,
+    rms,
+    tidyverse,
+    caret,
+    pec,
+    coefplot,
+    survAUC,
+    gridExtra,
+    ggplot2,
+    survminer,
+    randomForestSRC,
+    ggRandomForests,
+    penalized,
+    DMwR,
+    randomForest,
+    riskRegression,
+    pROC,
+    ROCR,
+    cvTools,
+    MTLR,
+    profmem,
+    pseudo,
+    survivalROC,
+    survival,
+    survAUC,
+    CoxBoost,
+    limma,
+    partykit,
+    coin,
+    compound.Cox,
+    GenAlgo,
+    survivalsvm,
+    rmatio,
+    survivalmodels,
+    reticulate,
+    Matrix,
+    keras
+```
+
+## installation
+```{r}
+#install.packages("SurvBenchmark")
+library(SurvBenchmark)
+```
+
+# An example clinical dataset 
+
+* In this section, we use the veteran dataset from the package "survival"
+
+## Data pre-processing
+We load the data and check the column names of the data, in `SurvBenchmark`,it is required the two outcome columns: survival time and survival status are named as **time** and **status** respectively. If your data is not named properly, in this first step, you have to change the column names.   
+
+  
+  This veteran data example is ok, no need to change the name. 
+```{r}
+# veteran data
+data("veteran")
+colnames(veteran)
+```
+
+## Run models in SurvBenchmark and get the evaluated results
+  
+  First of all, we get the survival formula **fitform_ogl** we would like to use in the model:
+```{r}
+xnam <- paste(colnames(veteran)[c(1,2,5,6,7,8)], sep="")
+form=as.formula(paste("survival::Surv(time, status)~ ", paste(xnam, collapse= "+")))
+fitform_ogl=form
+fitform_ogl
+```
+
+Check the distribution of survival time
+```{r}
+summary(veteran$time)
+hist(veteran$time)
+```
+
+Get the time sequence to calculate time-dependent AUC values, here, we pick 15 time points between the 1st and the 3rd quantile of all the time period
+```{r}
+timess=seq(as.numeric(summary(veteran$time)[2]),as.numeric(summary(veteran$time)[5]),(as.numeric(summary(veteran$time)[5])-as.numeric(summary(veteran$time)[2]))/14)
+
+```
+
+Run Coxph model with AIC backward elimination as the feature selection method.  
+  
+  
+* this example returns a result dataframe with 5 rows, each of them is one fold under a 5-fold cross validation setting. Those columns are the corresponding evaluation measurements.
+```{r}
+formula1=fitform_ogl
+formula2=fitform_ogl
+formula3=survival::Surv(time,status)~1
+formula4=survival::Surv(time,status)~1
+result1=bw_cox1_fun(1,veteran,5,fitform_ogl,formula1,formula2,formula3,formula4,timess)
+result1
+```
+
+Run this exmple under the parallel setting. 
+
+  * You can also run large datasets under parallel to speed up and to note down the run time and memory used
+```{r}
+start_time <- Sys.time()
+Rprof(tf <- "rprof.log",memory.profiling=TRUE)
+cox1 <- pbmcapply::pbmclapply(1:20, bw_cox1_fun,veteran,5, fitform_ogl,formula1,formula2,formula3,formula4,timess, mc.cores = 15)
+Rprof(NULL)
+mm<-summaryRprof(tf,memory = "both")
+mm
+#saveRDS(mm,"veteran_bw_cox1m.rds")
+#saveRDS(cox1,"veteran_bw_cox1.rds")
+#cox1<-readRDS("veteran_bw_cox1.rds")
+head(cox1)
+end_time <- Sys.time()
+end_time - start_time
+#saveRDS(end_time - start_time,"veteran_bw_cox1t.rds")
+```
+
+# An example omics dataset 
+
+## Data pre-processing. 
+  
+  * In this section, we use the GSE49997_eset dataset from the package "curatedOvarianData"
+  
+  We load the data and check the column names of the data, in `SurvBenchmark`,it is required the two outcome columns: survival time and survival status are named as **time** and **status** respectively. If your data is not named properly, in this first step, you have to change the column names.   
+    Also, to apply Differential Expression (DE) analysis to get DE genes (similarly, for genetic algorithm feature selection), we require the binarised outcome to be named as **os_class**, and you might need to create that column (see this example below).
+    
+```{r}
+#load the data
+data("GSE49997_eset")
+expmatrix2=Biobase::exprs(GSE49997_eset)
+dim(expmatrix2) #check the dimension of the data
+
+expmatrix2_1=t(expmatrix2)
+cancerdt2=cbind.data.frame(expmatrix2_1,GSE49997_eset$vital_status,GSE49997_eset$days_to_death)
+colnames(cancerdt2)[16049:16050]=c("status","time") #change the name here
+cancerdt2$status=as.vector(ifelse(cancerdt2$status=="living",0,1))
+
+cancerdt2_1=cancerdt2[complete.cases(cancerdt2),] # get rid of missing values
+dim(cancerdt2_1) 
+#check the time and status
+table(cancerdt2$status)
+summary(cancerdt2$time)
+hist(cancerdt2_1$time)
+#create the binary outcome column
+cancerdt2_1$os_class=as.vector(ifelse(cancerdt2_1$status==1 & 
+                                        cancerdt2_1$time <2*365, "poor", 
+                                      ifelse(cancerdt2_1$status==0 & 
+                                               cancerdt2_1$time >2*365, "good", "not")))
+
+#get the survival formulas
+fitform_ogl=survival::Surv(time,status)~.
+formula1=fitform_ogl
+formula2=fitform_ogl
+formula3=survival::Surv(time,status)~1
+formula4=survival::Surv(time,status)~1
+form1=as.formula(~.)
+timess=seq(as.numeric(summary(cancerdt2_1$time)[2]),as.numeric(summary(cancerdt2_1$time)[5]),(as.numeric(summary(cancerdt2_1$time)[5])-as.numeric(summary(cancerdt2_1$time)[2]))/14)
+
+```
+
+## Run the MTLR model with DE feature selection and get the evaluated results
+```{r}
+# # parallel
+# start_time <- Sys.time()
+# Rprof(tf <- "rprof.log",memory.profiling=TRUE)
+# result2 <- pbmcapply::pbmclapply(1, mtlr_fun2,cancerdt2_1,5, 16047,1000,timess, mc.cores = 15)
+# Rprof(NULL)
+# mm<-summaryRprof(tf,memory = "both")
+# mm
+# end_time <- Sys.time()
+# time_diff=end_time - start_time
+# colnames(result2[[1]])=c("hc","bc","unoc","ghc","br1","br2","br3","br4","br5","br6","a1","a2","a3","a4","a5","a6","a7","a8","a9","a10","a11","a12","a13","a14","a15","a")
+# result2=result2[[1]]
+# save(mm,time_diff,result2,file="omics_result.rda")
+
+load("omics_result.rda")
+#memory
+mm
+#time
+time_diff
+#other evaluation metrics
+result2
+```
+
+# Session Info
+
+```{r}
+sessionInfo("SurvBenchmark")
+```

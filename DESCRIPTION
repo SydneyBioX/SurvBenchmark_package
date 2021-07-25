@@ -1,0 +1,61 @@
+Package: SurvBenchmark
+Type: Package
+Title: survival approaches benchmarking
+Version: 0.1.0
+Author: Yunwei Zhang
+Maintainer: The package maintainer <yunwei.zhangf@sydney.edu.au>
+Description: This package is about getting evaluated measurements from multiple survival models.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Depends: R (>= 3.6.0)
+Imports:
+    stats,
+    parallel,
+    foreach,
+    lubridate,
+    survival,
+    dplyr,
+    glmnet,
+    rms,
+    tidyverse,
+    caret,
+    pec,
+    coefplot,
+    survAUC,
+    gridExtra,
+    ggplot2,
+    survminer,
+    randomForestSRC,
+    ggRandomForests,
+    penalized,
+    DMwR,
+    randomForest,
+    riskRegression,
+    pROC,
+    ROCR,
+    cvTools,
+    MTLR,
+    profmem,
+    pseudo,
+    survivalROC,
+    survival,
+    survAUC,
+    CoxBoost,
+    limma,
+    partykit,
+    coin,
+    compound.Cox,
+    GenAlgo,
+    survivalsvm,
+    rmatio,
+    survivalmodels,
+    reticulate,
+    Matrix,
+    keras
+Suggests: 
+    knitr,
+    rmarkdown,
+    covr
+VignetteBuilder: knitr
