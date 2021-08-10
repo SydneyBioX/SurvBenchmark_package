@@ -38,7 +38,7 @@ cox_boost_fun(
 
 \item{time1}{a numeric value, the time point to calculate the risk, see package "CoxBoost"}
 
-\item{timess}{a numeric vector, contains time points to get the time-dependent AUC values}
+\item{timess}{a numeric vector of length 15, contains time points to get the time-dependent AUC values}
 
 \item{stepnumber}{a numeric value, the number of stpes performed in the model, see package "CoxBoost"}
 

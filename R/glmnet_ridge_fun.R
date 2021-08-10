@@ -11,7 +11,7 @@
 #' @param formula2 a Surv object from package survival, to calculate a version of the brier score, details please check package pec
 #' @param formula3 a Surv object from package survival, to calculate a version of the brier score, details please check package pec
 #' @param formula4 a Surv object from package survival, to calculate a version of the brier score, details please check package pec
-#' @param timess a numeric vector, contains time points to get the time-dependent AUC values
+#' @param timess a numeric vector of length 15, contains time points to get the time-dependent AUC values
 #' @return a data.frame with allevaluation measurements in all columns and rows are each fold results from cross-validation
 #'
 #' @examples
@@ -23,10 +23,15 @@
 #' formula4=survival::Surv(time,status)~1
 #' form1=as.formula(~.)
 #' timess=seq(as.numeric(summary(cancerdt2_1$time)[2]),as.numeric(summary(cancerdt2_1$time)[5]),(as.numeric(summary(cancerdt2_1$time)[5])-as.numeric(summary(cancerdt2_1$time)[2]))/14)
-#' want=glmnet_lassocox_fun(1,cancerdt2_1[,-dim(cancerdt2_1)[2]],5,formula1,formula2,formula3,formula4,timess);
+#' want=glmnet_ridge_fun(1,cancerdt2_1[,-dim(cancerdt2_1)[2]],5,formula1,formula2,formula3,formula4,timess);
 #' @export
 
 glmnet_ridge_fun=function(r,data,cvK,formula1,formula2,formula3, formula4, timess){
+  if (! is.numeric(r)) stop("Input seed is wrong")
+  if (! is.numeric(cvK)) stop("Input cross-validation fold number is wrong")
+  if (is.null(dim(data))) stop("Input data is wrong")
+  if (length(timess)!=15) stop("Wrong time vector length")
+  if (class(timess)!= "numeric") stop("Wrong time vector type")
   set.seed(r)
   print(r)
   cvSets = cvTools::cvFolds(nrow(data), cvK)  # permute all the data, into 5 folds

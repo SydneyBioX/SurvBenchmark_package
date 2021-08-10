@@ -17,7 +17,7 @@ mtlr_fun2(r, data, cvK, numm, topnumm, timess)
 
 \item{topnumm}{a numeric value, the number of variables selected to be passed into the model, for example, the number of DE genes}
 
-\item{timess}{a numeric vector, contains time points to get the time-dependent AUC values}
+\item{timess}{a numeric vector of length 15, contains time points to get the time-dependent AUC values}
 }
 \value{
 a data.frame with allevaluation measurements in all columns and rows are each fold results from cross-validation

@@ -23,7 +23,7 @@ getPseudoConditional(t, d, qt)
 
 \item{formula4}{a Surv object from package survival, to calculate a version of the brier score, details please check package pec}
 
-\item{timess}{a numeric vector, contains time points to get the time-dependent AUC values}
+\item{timess}{a numeric vector of length 15, contains time points to get the time-dependent AUC values}
 
 \item{pickedtime}{a numeric vector, the picked pesudo time points, see package "DNNSurv" for details}
 }

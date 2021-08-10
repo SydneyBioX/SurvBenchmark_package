@@ -21,7 +21,7 @@ glmnet_en_fun(r, data, cvK, formula1, formula2, formula3, formula4, timess)
 
 \item{formula4}{a Surv object from package survival, to calculate a version of the brier score, details please check package pec}
 
-\item{timess}{a numeric vector, contains time points to get the time-dependent AUC values}
+\item{timess}{a numeric vector of length 15, contains time points to get the time-dependent AUC values}
 
 \item{numm}{a numeric value, the number of variables,i.e.for example, number of proteins in the data}
 
@@ -44,5 +44,5 @@ formula3=survival::Surv(time,status)~1
 formula4=survival::Surv(time,status)~1
 form1=as.formula(~.)
 timess=seq(as.numeric(summary(cancerdt2_1$time)[2]),as.numeric(summary(cancerdt2_1$time)[5]),(as.numeric(summary(cancerdt2_1$time)[5])-as.numeric(summary(cancerdt2_1$time)[2]))/14)
-want=glmnet_lassocox_fun(1,cancerdt2_1[,-dim(cancerdt2_1)[2]],5,formula1,formula2,formula3,formula4,timess);
+want=glmnet_en_fun(1,cancerdt2_1[,-dim(cancerdt2_1)[2]],5,formula1,formula2,formula3,formula4,timess);
 }

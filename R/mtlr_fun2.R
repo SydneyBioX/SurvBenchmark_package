@@ -6,7 +6,7 @@
 #' @param cvK a numeric value, cross-validation fold
 #' @param numm a numeric value, the number of variables,i.e.for example, number of proteins in the data
 #' @param topnumm a numeric value, the number of variables selected to be passed into the model, for example, the number of DE genes
-#' @param timess a numeric vector, contains time points to get the time-dependent AUC values
+#' @param timess a numeric vector of length 15, contains time points to get the time-dependent AUC values
 #' @return a data.frame with allevaluation measurements in all columns and rows are each fold results from cross-validation
 #'
 #' @examples
@@ -26,6 +26,13 @@
 #' @export
 
 mtlr_fun2=function(r,data,cvK,numm,topnumm,timess){
+  if (! is.numeric(r)) stop("Input seed is wrong")
+  if (! is.numeric(cvK)) stop("Input cross-validation fold number is wrong")
+  if (! is.numeric(numm)) stop("Input number of variables is wrong")
+  if (! is.numeric(topnumm)) stop("Input number of top variable selection is wrong")
+  if (is.null(dim(data))) stop("Input data is wrong")
+  if (length(timess)!=15) stop("Wrong time vector length")
+  if (class(timess)!= "numeric") stop("Wrong time vector type")
   set.seed(r)
   print(r)
   cvSets = cvTools::cvFolds(nrow(data), cvK)  # permute all the data, into 5 folds
