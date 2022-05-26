@@ -2,6 +2,7 @@
 
 
 This is the work for SurvBenchmark (202205 updated) and the associated paper can be found: Zhang, Yunwei & Wong, Germaine & Mann, Graham & Muller, Samuel & Yang, Jean. (2021). SurvBenchmark: comprehensive benchmarking study of survival analysis methods using both omics data and clinical data. 10.1101/2021.07.11.451967. 
+Paper github page:https://github.com/SydneyBioX/SurvBenchmark
 
 # Introduction 
 We develop a benchmarking design, SurvBenchmark, that evaluates a diverse collection of survival models for both clinical and omics datasets. SurvBenchmark not only focuses on classical approaches such as the Cox model, but it also evaluates state-of-art machine learning survival models. 
