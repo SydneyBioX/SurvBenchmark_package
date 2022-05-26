@@ -7,28 +7,6 @@ This is the work for SurvBenchmark (202205 updated) and the associated paper can
 We develop a benchmarking design, SurvBenchmark, that evaluates a diverse collection of survival models for both clinical and omics datasets. SurvBenchmark not only focuses on classical approaches such as the Cox model, but it also evaluates state-of-art machine learning survival models. 
 There are 16 datasets (https://github.com/SydneyBioX/SurvBenchmark/blob/main/tables/table1.docx) and 20 survival methods (https://github.com/SydneyBioX/SurvBenchmark/blob/main/tables/table2.docx) benchmarked in this study. 
 
-##############################################################################
-
-# Files in this repo 
-
-In this repo, all the high resolution figures related to the paper can be found under folder <figures>.
-
-The folder <functions> contains functions to run all methods.
-
-The folder <datasets> contains all datasets benchmarked in our paper.
-
-The folder <figures_data> contains all figure data used to generate the figures in our paper. 
-
-The github_example.R file gives an example to get the results using methods in <functions> on the Ovarian dataset. 
-
-For the datasets we used, please check this Table1 in our paper, this is also under <tables> table1.
-
-For the survival methods we benchmarked, please check Table2 in our paper, this is also under <tables> table2.
-
-The R package is available at https://github.com/yunwezhang/SurvBenchmark_package, on-going work will be updated continuously. 
-
-
-###############################################################################
 
 # Installation 
 
@@ -88,15 +66,6 @@ library(rmatio)
 library(survivalmodels)
 library(reticulate)
 ```
-
-
-## Visualise the results
-
-The comparison of survival models can be visualized using heatmap as the below example.  
-
-
-<img src="figures/github_figure.png" align="center" width="400"/>
-
 
 
 # Reference
